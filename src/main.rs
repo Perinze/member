@@ -1,6 +1,8 @@
 use sqlx::mysql::{MySqlPoolOptions, MySqlRow};
 use sqlx::{Error, Row};
 use chrono;
+use strum::EnumString;
+use std::str::FromStr;
 
 #[derive(sqlx::Type, EnumString)]
 #[sqlx(rename = "department", rename_all = "snake_case")]
@@ -12,6 +14,7 @@ enum Department {
     Magazine,
     NewMedia,
     HumanResources,
+    Null,
 }
 
 #[derive(sqlx::Type)]
@@ -48,6 +51,7 @@ impl<'r> sqlx::FromRow<'r, MySqlRow> for Individual {
         let department_string: String = row.try_get("department")?;
         let department = match Department::from_str(&department_string) {
             Ok(t) => t,
+            Err(e) => Department::Null,
         };
         let student_id = row.try_get("student_id")?;
         let sex = row.try_get("sex")?;
