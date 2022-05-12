@@ -1,8 +1,51 @@
 use sqlx::mysql::{MySqlPoolOptions, MySqlRow};
-use sqlx::{Error, Row};
+use sqlx::Row;
 use chrono;
 use strum::EnumString;
 use std::str::FromStr;
+use std::{fmt, error};
+
+/*
+#[derive(Debug)]
+enum Error {
+    SqlxError(sqlx::Error),
+    StrumParseError(strum::ParseError),
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Error::SqlxError(e) =>
+                write!(f, "{}", e),
+            Error::StrumParseError(e) =>
+                write!(f, "{}", e)
+        }
+    }
+}
+
+impl error::Error for Error {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match *self {
+            Error::SqlxError(ref e) => Some(e),
+            Error::StrumParseError(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<sqlx::Error> for Error {
+    fn from(err: sqlx::Error) -> Error {
+        Error::SqlxError(err)
+    }
+}
+
+impl From<strum::ParseError> for Error {
+    fn from(err: strum::ParseError) -> Error {
+        Error::StrumParseError(err)
+    }
+}
+*/
+
+
 
 #[derive(sqlx::Type, EnumString)]
 #[sqlx(rename = "department", rename_all = "snake_case")]
@@ -14,7 +57,7 @@ enum Department {
     Magazine,
     NewMedia,
     HumanResources,
-    Null,
+    None,   // only for test
 }
 
 #[derive(sqlx::Type)]
@@ -45,14 +88,13 @@ struct Individual {
 }
 
 impl<'r> sqlx::FromRow<'r, MySqlRow> for Individual {
-    fn from_row(row: &'r MySqlRow) -> Result<Self, Error> {
+    fn from_row(row: &'r MySqlRow) -> Result<Self, sqlx::Error> {
         let id = row.try_get("id")?;
         let name = row.try_get("name")?;
         let department_string: String = row.try_get("department")?;
-        let department = match Department::from_str(&department_string) {
-            Ok(t) => t,
-            Err(e) => Department::Null,
-        };
+        println!("{}", department_string);
+        // let department = Department::from_str(&department_string).unwrap();
+        let department = Department::None;
         let student_id = row.try_get("student_id")?;
         let sex = row.try_get("sex")?;
         let grade = row.try_get("grade")?;
