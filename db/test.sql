@@ -23,16 +23,10 @@ DROP TABLE IF EXISTS `test`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `test` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) NOT NULL,
-  `department` enum('product','design','operation','development','magazine','new_media','human_resources') NOT NULL,
-  `student_id` varchar(256) DEFAULT NULL,
-  `sex` enum('male','female','other') DEFAULT NULL,
-  `grade` year(4) DEFAULT NULL,
-  `major` varchar(256) DEFAULT NULL,
-  `class` varchar(256) DEFAULT NULL,
-  `join_time` date DEFAULT NULL,
-  `leave_time` date DEFAULT NULL,
-  `description` varchar(1024) DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
+  `department` int(3) NOT NULL,
+  `student_id` varchar(13) DEFAULT NOT NULL,
+  `gender` int(2) DEFAULT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -44,7 +38,7 @@ CREATE TABLE `test` (
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
 INSERT INTO `test` VALUES
-(1,'perinze','development','1145141919810','male',2020,'infomation engineering','info2020','2020-11-11',NULL,'sb');
+(1,'perinze',3,'1145141919810',1);
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

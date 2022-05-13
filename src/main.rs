@@ -47,8 +47,6 @@ impl From<strum::ParseError> for Error {
 
 
 
-#[derive(sqlx::Type, EnumString)]
-#[sqlx(rename = "department", rename_all = "snake_case")]
 enum Department {
     Product,
     Design,
@@ -57,11 +55,9 @@ enum Department {
     Magazine,
     NewMedia,
     HumanResources,
-    None,   // only for test
 }
 
-#[derive(sqlx::Type)]
-enum Sex {
+enum Gender {
     None,
     Male,
     Female,
@@ -75,7 +71,7 @@ struct Individual {
     name: String,
     department: Department,
     student_id: String,
-    sex: Sex,
+    gender: Gender,
     // grade: chrono::Date<Tz>,
     grade: String,
     major: String,
