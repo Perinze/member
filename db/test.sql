@@ -25,8 +25,8 @@ CREATE TABLE `test` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `department` int(3) NOT NULL,
-  `student_id` varchar(13) NOT NULL,
-  `gender` int(2) NOT NULL,
+  `student_id` varchar(13) DEFAULT NOT NULL,
+  `gender` int(2) DEFAULT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
