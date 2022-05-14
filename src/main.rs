@@ -42,7 +42,7 @@ where
 
 impl Conn<MySql> {
     async fn individual_by_id(&self, id: i32) -> Result<Individual, Error> {
-        let individual: Individual = sqlx::query_as("SELECT * FROM test where id = ?")
+        let individual: Individual = sqlx::query_as("SELECT * FROM test WHERE id = ?")
             .bind(id)
             .fetch_one(&self.pool).await?;
         Ok(individual)
