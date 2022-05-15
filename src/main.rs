@@ -15,7 +15,6 @@ async fn get_cv(
     // code here
 }
 
-#[post("/updatestate")]
 async fn update_state(
     cv_info:
     task:
@@ -25,7 +24,6 @@ async fn update_state(
     // code here
 }
 
-#[post("/updatesign")]
 async fn update_sign(
     cv_info:
     task:
@@ -35,7 +33,6 @@ async fn update_sign(
     // code here
 }
 
-#[post("/comment")]
 async fn handle_comment(
     comment_dat:
     cur_usr:
@@ -44,7 +41,6 @@ async fn handle_comment(
     // code here
 }
 
-#[post("/getcomment")]
 async fn get_comment(
     sno: &str,
     dept: &str,
@@ -64,6 +60,36 @@ fn cv_scope() -> web::Scope {
 }
 
 // cv handlers end
+
+// dept handlers
+
+async fn get_info (
+    cur_usr:
+) -> Result<impl Responder> {
+
+    // code here
+}
+
+async fn get_record (
+    cur_usr:
+) -> Result<impl Responder> {
+
+    // code here
+}
+
+fn dept_scope() -> web::Scope {
+    web::scope("dept")
+        .service("/getinfo", web::get().to(get_info))
+        .service("/getrecord", web::get().to(get_record))
+}
+
+// dept handlers end
+
+fn app() -> web::App {
+    web::App()
+        .service(cv_scope())
+        .service(dept_scopt())
+}
 
 #[get("/json/{name}")]
 async fn json(name: web::Path<String>) -> Result<impl Responder> {
