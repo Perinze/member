@@ -27,6 +27,29 @@ struct Individual {
     gender: i32,
 }
 
+/*
+struct CrudBase<T: FromRow, DB: Database> {
+    model: T,
+    pool: Pool<DB>,
+}
+
+impl<T, DB> CrudBase<T, DB>
+where
+    T: FromRow,
+    DB: Database {
+
+    fn new(model: T, pool: Pool<DB>) -> Self {
+        CrudBase {
+            model,
+            pool
+        }
+    }
+
+    async fn select_one_by(&self, )
+}
+*/
+
+/*
 struct Conn<DB: Database> {
     pool: Pool<DB>,
 }
@@ -48,19 +71,38 @@ impl Conn<MySql> {
         Ok(individual)
     }
 }
+*/
+
+#[derive(Debug)]
+struct User {
+    id: i32,
+    username: String,
+    email: String,
+    password: String,
+}
 
 #[actix_web::main]
 async fn main() -> Result<(), sqlx::Error> {
+    let mut users = (0..).map(|i| User {
+        id: i,
+        username: format!("test_user_{}", i),
+        email: format!("test-user-{}@example.com", i),
+        password: format!("Test!User@Password#{}", i),
+    });
+
+    println!("{:?}", users.next());
+    println!("{:?}", users.next());
+
     // Create a connection pool
     let pool = MySqlPoolOptions::new()
         .max_connections(5)
         .connect("mysql://root:member@172.18.0.2/test").await?;
 
-    let conn = Conn::new(pool);
+    //let conn = Conn::new(pool);
 
-    let individual = conn.individual_by_id(1).await?;
+    //let individual = conn.individual_by_id(1).await?;
 
-    println!("{:?}", individual);
+    //println!("{:?}", individual);
 
     Ok(())
 }
