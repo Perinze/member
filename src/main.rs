@@ -98,6 +98,10 @@ async fn main() -> Result<(), sqlx::Error> {
         .max_connections(5)
         .connect("mysql://root:member@172.18.0.2/test").await?;
 
+    let mut query_builder: QueryBuilder<MySql> = QueryBuilder::new(
+        "INSERT INTO users(id, username, email, password) "
+    );
+
     //let conn = Conn::new(pool);
 
     //let individual = conn.individual_by_id(1).await?;
