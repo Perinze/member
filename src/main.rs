@@ -1,5 +1,5 @@
 use sqlx::mysql::{MySqlPoolOptions};
-use sqlx::{FromRow, Database, Pool, MySql, Error};
+use sqlx::{FromRow, Database, Pool, MySql, Error, Execute};
 
 enum Department {
     Product,
@@ -98,9 +98,24 @@ async fn main() -> Result<(), sqlx::Error> {
         .max_connections(5)
         .connect("mysql://root:member@172.18.0.2/test").await?;
 
-    let mut query_builder: QueryBuilder<MySql> = QueryBuilder::new(
+    let mut query_builder: sqlx::QueryBuilder<MySql> = sqlx::QueryBuilder::new(
         "INSERT INTO users(id, username, email, password) "
     );
+
+    query_builder.push_values(users.take(3), |mut b, user| {
+        b.push_bind(user.id)
+            .push_bind(user.username)
+            .push_bind(user.email)
+            .push_bind(user.password);
+    });
+
+    let mut query = query_builder.build();
+
+    let sql = query.sql();
+    let arguments = query.take_arguments().unwrap();
+
+    println!("{}", sql);
+    println!("{}", arguments.len());
 
     //let conn = Conn::new(pool);
 
