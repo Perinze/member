@@ -2,7 +2,9 @@ use sqlx::mysql::{MySqlPoolOptions};
 use sqlx::{FromRow, Database, Pool, MySql, Error, Execute};
 
 mod model {
+    use sqlx::FromRow;
 
+    #[derive(FromRow)]
     struct Cv {
         id: i32,
         dept_id: i32,
@@ -26,6 +28,7 @@ mod model {
         time: String,       // chrono::Date
     }
 
+    #[derive(FromRow)]
     struct Dept {
         id: i32,
         name: String,
@@ -33,6 +36,7 @@ mod model {
         mail, Text,
     }
 
+    #[derive(FromRow)]
     struct Record {
         id: i32,
         dept_id: i32,
@@ -41,12 +45,32 @@ mod model {
         time: String,
     }
 
+    #[derive(FromRow)]
     struct User {
         id: i32,
         nick: String,
         openid: String,
         dept_id: i32,
         role: String,
+    }
+}
+
+mod api {
+
+    mod cv {
+        use actix_web::{get, post};
+
+        #[get("/getinfo")]
+        async fn handle_get_cv(
+            cur_usr: /* unknown */
+        ) -> Result<impl Response> {
+            Ok(web::Json(json!(
+                {
+                    "code": 0,
+                    "cvList": cvList
+                }
+            )))
+        }
     }
 }
 
